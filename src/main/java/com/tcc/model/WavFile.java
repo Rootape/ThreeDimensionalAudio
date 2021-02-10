@@ -151,5 +151,9 @@ public class WavFile extends ByteUtils{
 		
 		return buffer;
 	}
-
+	
+	public String toString() {
+		return "BitRate: " + sampleRate * numChannels * bitsPerSample;
+	}
+	
 }

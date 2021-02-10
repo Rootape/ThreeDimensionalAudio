@@ -24,23 +24,21 @@ public class WavUtils {
 			e.printStackTrace();
 		}
 		
-		int chunkSize = Integer.parseInt(Util.bigEndian(new int[] {data[4], data[5], data[6], data[7]}), 16);
-		int subChunk1Size = Integer.parseInt(Util.bigEndian(new int[] {data[16], data[17], data[18], data[19]}), 16);
-		int audioFormat = Integer.parseInt(Util.bigEndian(new int[] {data[20], data[21]}), 16);
-		int numChannels = Integer.parseInt(Util.bigEndian(new int[] {data[22], data[23]}), 16);
-		int sampleRate = Integer.parseInt(Util.bigEndian(new int[] {data[24], data[25], data[26], data[27]}), 16);
-		int byteRate = Integer.parseInt(Util.bigEndian(new int[] {data[28], data[29], data[30], data[31]}), 16);
-		int blockAlign = Integer.parseInt(Util.bigEndian(new int[] {data[32], data[33]}), 16);
-		int bitsPerSample = Integer.parseInt(Util.bigEndian(new int[] {data[34], data[35]}), 16);
-		int subChunk2Size = Integer.parseInt(Util.bigEndian(new int[] {data[40], data[41], data[42], data[43]}), 16);
+		int chunkSize = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[4]), Util.formatByte(data[5]), Util.formatByte(data[6]), Util.formatByte(data[7])}), 16);
+		int subChunk1Size = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[16]), Util.formatByte(data[17]), Util.formatByte(data[18]), Util.formatByte(data[19])}), 16);
+		int audioFormat = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[20]), Util.formatByte(data[21])}), 16);
+		int numChannels = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[22]), Util.formatByte(data[23])}), 16);
+		int sampleRate = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[24]), Util.formatByte(data[25]), Util.formatByte(data[26]), Util.formatByte(data[27])}), 16);
+		int byteRate = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[28]), Util.formatByte(data[29]), Util.formatByte(data[30]), Util.formatByte(data[31])}), 16);
+		int blockAlign = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[32]), Util.formatByte(data[33])}), 16);
+		int bitsPerSample = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[34]), Util.formatByte(data[35])}), 16);
+		int subChunk2Size = Integer.parseInt(Util.bigEndian(new int[] {Util.formatByte(data[40]), Util.formatByte(data[41]), Util.formatByte(data[42]), Util.formatByte(data[43])}), 16);
 		int bytesPerSample = bitsPerSample/8;
 		
 		LinkedHashMap<String, int[]> map = Util.getChunks(data);
 		
 		int dataBeg = 44;
 		int dataEnd = data.length;
-		
-		//System.out.println("Data ia de " + dataBeg + " ate " + dataEnd);
 		
 		if(map.get("data")[0] != 44-8) {
 			dataBeg = map.get("data")[1] + 5;
@@ -68,11 +66,9 @@ public class WavUtils {
 			}
 		}
 		
-		int dataSize = dataEnd - dataBeg;
+		int dataSize = (dataEnd - dataBeg%2==0?dataEnd - dataBeg:dataEnd - dataBeg + 1);
 		
-		//System.out.println("Data vai de " + dataBeg + " ate " + dataEnd);
-		
-		//System.out.println("Data Size = " + (dataSize/2));
+		System.out.println("Buffer length: " + dataSize );
 		
 		String[] hexBuffer = new String[dataSize];
 		
@@ -82,6 +78,10 @@ public class WavUtils {
 				sByt = sByt.substring(sByt.length()-2);
 			}
 			hexBuffer[i-dataBeg] = sByt;
+		}
+		
+		if(hexBuffer[dataSize-1] == null) {
+			hexBuffer[dataSize-1] = "0";
 		}
 		
 		for(int i = 0; i < hexBuffer.length; i++) {
