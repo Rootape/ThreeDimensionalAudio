@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Device {
 	
 	private  String id;
+	private  String name;
 	private  int[] pos;
 	private  ArrayList<Audio> audios = new ArrayList<>();
 	
-	public Device(String id, int[] pos) {
+	public Device(String id, String name, int[] pos) {
 		this.id = id;
+		this.name = name;
 		this.pos = pos;
 	}
 	
@@ -18,7 +20,7 @@ public class Device {
 	}
 	
 	public double getDistance(int[] oPos) {
-		return (int) Math.sqrt(Math.pow(this.pos[0] - oPos[0], 2) + Math.pow(this.pos[1] - oPos[1], 2) + Math.pow(this.pos[2] - oPos[2], 2));
+		return (int) Math.sqrt(Math.pow(this.pos[0] - oPos[0], 2) + Math.pow(this.pos[1] - oPos[1], 2));
 	}
 	
 	public double getUserDistance() {
@@ -27,6 +29,14 @@ public class Device {
 	
 	public String getId() {
 		return this.id;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public int[] getPos() {
+		return this.pos;
 	}
 	
 	public ArrayList<Audio> getAudios(){

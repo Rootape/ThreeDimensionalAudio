@@ -136,7 +136,7 @@ public class AudioUtils {
 			AudioFormat novo = new AudioFormat(srcFormat.getEncoding(),
 	        		srcFormat.getSampleRate(),
 	                srcFormat.getSampleSizeInBits(),
-	                (srcFormat.getChannels()==2?srcFormat.getChannels()/2:srcFormat.getChannels()),
+	                srcFormat.getChannels(),
 	                srcFormat.getFrameSize(),
 	                srcFormat.getFrameRate(),
 	                srcFormat.isBigEndian());
@@ -225,7 +225,7 @@ public class AudioUtils {
 		
 	}
 	
-	public static Audio changeVolume(String id, String src, String dst, float scale) {
+	public static Audio changeVolume(String id, String src, String dst, double scale) {
 		
 		File source = new File(src);
 		File destination = new File(dst);

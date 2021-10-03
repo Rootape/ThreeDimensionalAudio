@@ -2,6 +2,7 @@ package ThreeDimensionalAudio.util.device;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -22,68 +23,75 @@ import ThreeDimensionalAudio.util.math.MathUtils;
 public class DeviceUtils {
 	
 	public static HashMap<String, Device> populateDevices(HashMap<String, Device> devices, ArrayList<Audio> audios){
-		
-		for(Audio a : audios) {
-			HashMap<String, Double> dists = new HashMap<>();
-			for(Device d : devices.values()) {
-				dists.put(d.getId(), d.getDistance(a.getPos()));
-			}
-			Entry<String, Double> min = null;
-			for (Entry<String, Double> entry : dists.entrySet()) {
-			    if (min == null || min.getValue() > entry.getValue()) {
-			        min = entry;
-			    }
-			}
-			String minDev = min.getKey();
-			
-			String scndMinDev = "";
-			
-			Entry<String, Double> scndMin = null;
-			if(dists.get(minDev) != 0) {
-				for (Entry<String, Double> entry : dists.entrySet()) {
-				    if ((scndMin == null) || (scndMin.getValue() > entry.getValue() && entry != min)) {
-				    	if(entry != min) {
-				    		scndMin = entry;
-				    	}
-				    }
-				}
-				scndMinDev = scndMin.getKey();
-			}
-			
-			if(scndMin == null) {
-				String audioDevId = minDev+a.getId();
-				String newPath = "C:\\TCC\\help\\temp\\"+audioDevId+".wav";
-				try {
-					File wavFile = new File(a.getPath());
-						
-					WaveFileReader reader = new WaveFileReader();
-				    AudioInputStream audioIn = reader.getAudioInputStream(wavFile);
-				    AudioFormat srcFormat = audioIn.getFormat();
-				    AudioInputStream convertedIn = AudioSystem.getAudioInputStream(srcFormat, audioIn);
-					
-			        WaveFileWriter writer = new WaveFileWriter();
-			        writer.write(convertedIn, Type.WAVE, new File(newPath));
-			        
-			        devices.get(minDev).addAudio(new Audio(audioDevId, newPath, srcFormat));
-		        
-				}catch(Exception e) {
-					throw new RuntimeException(e);
-				}
-			}else {
-				String audioDevId = minDev+a.getId();
-				String newPath = "C:\\TCC\\help\\tempDevices\\"+audioDevId+".wav";
-				double scale = MathUtils.getCos(devices.get(minDev), a);
-				Audio a1 = AudioUtils.changeVolume(audioDevId, a.getPath(), newPath, (float)scale);
-				devices.get(minDev).addAudio(a1);
 				
-				audioDevId = scndMinDev+a.getId();
-				newPath = "C:\\TCC\\help\\tempDevices\\"+audioDevId+".wav";
-				Audio a2 = AudioUtils.changeVolume(audioDevId, a.getPath(), newPath, (float)scale);
-				devices.get(scndMinDev).addAudio(a2);
+		for(Audio a: audios) {
+			ArrayList<Device> closeDevs = getCloseDevices(a, devices);
+			
+			for(Device d: closeDevs) {
+				System.out.println(d.getId());
+				String newPath = "C:\\TCC\\help\\tempDevices\\"+d.getId()+a.getId()+".wav";
+				int[] user = new int[] {0, 0};
+				double cos = MathUtils.getCosNew(a.getPos(), user, d.getPos());
+				Audio aAlter = AudioUtils.changeVolume(d.getId()+a.getId(), a.getPath(), newPath, cos);
+				devices.get(d.getId()).addAudio(aAlter);
 			}
+			
 		}
 		
 		return devices;
 	}
-
+	
+	public static ArrayList<Device> getCloseDevices(Audio a, HashMap<String, Device> devices){
+		ArrayList<String> devIds = new ArrayList<>();
+		ArrayList<Double> dists = new ArrayList<>();
+		
+		for(Device d:devices.values()) {
+			devIds.add(d.getId());
+			dists.add(d.getDistance(a.getPos()));
+			System.out.println("[" + d.getPos()[0] + ", " + d.getPos()[1] + "] - [" + a.getPos()[0] + ", " + a.getPos()[1] + "]" );
+			System.out.println(d.getId() + " - " + d.getDistance(a.getPos()));
+		}
+		
+		ArrayList<Device> closeDevs = new ArrayList<>();
+		
+		if(Collections.min(dists) == 0.0) {
+			int indexOne = dists.indexOf(Collections.min(dists));
+			closeDevs.add(devices.get(devIds.get(indexOne)));
+		} else {
+			int indexOne = dists.indexOf(Collections.min(dists));
+			closeDevs.add(devices.get(devIds.get(indexOne)));
+			dists.set(indexOne, 100.0);
+			int indexTwo = dists.indexOf(Collections.min(dists));
+			closeDevs.add(devices.get(devIds.get(indexTwo)));
+		}
+		
+		return closeDevs;
+		
+	}
+	
+	/*
+	public static ArrayList<Device> getCloseDevices(Audio a, HashMap<String, Device> devices){
+		HashMap<Double, String> daDists = new HashMap<>();
+		for(Device d:devices.values()) {
+			Double dist = d.getDistance(a.getPos());
+			if(daDists.isEmpty() || daDists.size() == 1) {
+				daDists.put(dist, d.getId());
+			}else {
+				for(Double dou: daDists.keySet()) {
+					if(Math.min(dist, dou) == dist) {
+						daDists.remove(dou);
+						daDists.put(dist, d.getId());
+					}
+				}
+			}
+		}
+		ArrayList<Device> closeDevs = new ArrayList<>();
+		
+		for(String s: daDists.values()) {
+			closeDevs.add(devices.get(s));
+		}
+		
+		return closeDevs;
+		
+	}*/
 }
