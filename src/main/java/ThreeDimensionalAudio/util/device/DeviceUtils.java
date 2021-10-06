@@ -48,8 +48,8 @@ public class DeviceUtils {
 		for(Device d:devices.values()) {
 			devIds.add(d.getId());
 			dists.add(d.getDistance(a.getPos()));
-			System.out.println("[" + d.getPos()[0] + ", " + d.getPos()[1] + "] - [" + a.getPos()[0] + ", " + a.getPos()[1] + "]" );
-			System.out.println(d.getId() + " - " + d.getDistance(a.getPos()));
+			//System.out.println("[" + d.getPos()[0] + ", " + d.getPos()[1] + "] - [" + a.getPos()[0] + ", " + a.getPos()[1] + "]" );
+			//System.out.println(d.getId() + " - " + d.getDistance(a.getPos()));
 		}
 		
 		ArrayList<Device> closeDevs = new ArrayList<>();
@@ -60,38 +60,26 @@ public class DeviceUtils {
 		} else {
 			int indexOne = dists.indexOf(Collections.min(dists));
 			closeDevs.add(devices.get(devIds.get(indexOne)));
+			printArrayList(dists);
 			dists.set(indexOne, 100.0);
+			printArrayList(dists);
 			int indexTwo = dists.indexOf(Collections.min(dists));
 			closeDevs.add(devices.get(devIds.get(indexTwo)));
+			System.out.println("Index1 = " + indexOne + ", " + "Index2 = " + indexTwo);
 		}
 		
 		return closeDevs;
 		
 	}
 	
-	/*
-	public static ArrayList<Device> getCloseDevices(Audio a, HashMap<String, Device> devices){
-		HashMap<Double, String> daDists = new HashMap<>();
-		for(Device d:devices.values()) {
-			Double dist = d.getDistance(a.getPos());
-			if(daDists.isEmpty() || daDists.size() == 1) {
-				daDists.put(dist, d.getId());
-			}else {
-				for(Double dou: daDists.keySet()) {
-					if(Math.min(dist, dou) == dist) {
-						daDists.remove(dou);
-						daDists.put(dist, d.getId());
-					}
-				}
-			}
-		}
-		ArrayList<Device> closeDevs = new ArrayList<>();
+	public static <T> void printArrayList(ArrayList<T> array) {
 		
-		for(String s: daDists.values()) {
-			closeDevs.add(devices.get(s));
+		System.out.print("[ ");
+		
+		for(Object o : array) {
+			System.out.print(o + " ");
 		}
 		
-		return closeDevs;
-		
-	}*/
+		System.out.println("]");
+	}
 }
