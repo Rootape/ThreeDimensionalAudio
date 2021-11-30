@@ -1,0 +1,3 @@
+<audioScene>
+   <audio id="audio1" src="src\main\resources\bell.wav" x="-2" y="0" z="0"/>
+</audioScene>

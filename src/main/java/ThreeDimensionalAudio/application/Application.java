@@ -17,22 +17,26 @@ public class Application {
 	
 	public static void main(String[] args) {
 		
-		String xmlDevices = "C:\\TCC\\help\\xmls\\xmlDev.xml";
+		String xmlDevices = "src\\main\\resources\\xmlDev.xml";
+		Scanner sca = new Scanner(System.in);
+		
+		System.out.print("Press ENTER to start");
+		String s = sca.nextLine();
 		
 		for(int i = 1; i < 8; i++) {
-			String xmlAudios = "C:\\TCC\\help\\xmls\\xmlAudio" + i + ".xml";
+			String xmlAudios = "src\\main\\resources\\xmlAudio" + i + ".xml";
 			
-			System.out.println("Parsing Audio XML");
+			//System.out.println("Parsing Audio XML");
 			ArrayList<Audio> audios = XMLParsers.readAudiosConfig(xmlAudios);
-			System.out.println("Parsing Devices XML");
+			//System.out.println("Parsing Devices XML");
 			HashMap<String, Device> devices = XMLParsers.readDevicesConfig(xmlDevices);
 			
-			System.out.println("Populating Devices with Audios");
+			//System.out.println("Populating Devices with Audios");
 			devices = DeviceUtils.populateDevices(devices, audios);
 			PlayUtils.play(devices.values());
 			
-			Scanner sca = new Scanner(System.in);
-			String s = sca.nextLine();
+			System.out.print("Press ENTER to continue");
+			s = sca.nextLine();
 		}
 	}
 }

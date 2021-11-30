@@ -38,12 +38,12 @@ public static ArrayList<Audio> readAudiosConfig(String xmlAudios) {
 				String src = node.getAttributes().getNamedItem("src").getNodeValue();
 				String x = node.getAttributes().getNamedItem("x").getNodeValue();
 				String y = node.getAttributes().getNamedItem("y").getNodeValue();
-				//String z = node.getAttributes().getNamedItem("z").getNodeValue();
+				String z = node.getAttributes().getNamedItem("z").getNodeValue();
 				
 				tempAudio = new Audio();
 				tempAudio = AudioUtils.normalizeAudio(id, src);
-				//tempAudio.setPos(new int[] {Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)});
-				tempAudio.setPos(new int[] {Integer.parseInt(x), Integer.parseInt(y)});
+				tempAudio.setPos(new int[] {Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)});
+				//tempAudio.setPos(new int[] {Integer.parseInt(x), Integer.parseInt(y)});
 				audios.add(tempAudio);
 				
 				tempAudio = null;
@@ -84,10 +84,10 @@ public static ArrayList<Audio> readAudiosConfig(String xmlAudios) {
 				
 				String x = output.getAttributes().getNamedItem("x").getNodeValue();
 				String y = output.getAttributes().getNamedItem("y").getNodeValue();
-				//String z = output.getAttributes().getNamedItem("z").getNodeValue();
+				String z = output.getAttributes().getNamedItem("z").getNodeValue();
 				
 				//devices.put(device, new Device(device, new int[] {Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)}));
-				devices.put(id, new Device(id, name, new int[] {Integer.parseInt(x), Integer.parseInt(y)}));
+				devices.put(id, new Device(id, name, new int[] {Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z)}));
 				
 			}
 			

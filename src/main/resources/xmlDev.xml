@@ -1,0 +1,11 @@
+<ambient id="sala">
+	<device id="saida1">
+		<output id="dev1" name="SAMSUNG (NVIDIA High Definition Audio)" x="-2" y="0" z="0"/>
+	</device>
+	<device id="saida2">
+		<output id="dev2" name="Alto-falantes (Realtek(R) Audio)" x="0" y="2" z="0"/>
+	</device>
+	<device id="saida3">
+		<output id="dev3" name="Fones de ouvido (BT-SPEAKER Stereo)" x="2" y="0" z="0"/>
+	</device>
+</ambient>

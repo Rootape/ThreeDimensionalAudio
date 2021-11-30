@@ -27,11 +27,18 @@ public class DeviceUtils {
 		for(Audio a: audios) {
 			ArrayList<Device> closeDevs = getCloseDevices(a, devices);
 			
+			HashMap<Device, double[]> devCosSin = new HashMap<>();
+			
 			for(Device d: closeDevs) {
-				System.out.println(d.getId());
+				//System.out.println(d.getId());
 				String newPath = "C:\\TCC\\help\\tempDevices\\"+d.getId()+a.getId()+".wav";
-				int[] user = new int[] {0, 0};
+				
+				int[] user = new int[] {0, 0, 0};
 				double cos = MathUtils.getCosNew(a.getPos(), user, d.getPos());
+				double sin = MathUtils.getSin(cos);
+				
+				devCosSin.put(d, new double[] {sin, cos});
+				
 				Audio aAlter = AudioUtils.changeVolume(d.getId()+a.getId(), a.getPath(), newPath, cos);
 				devices.get(d.getId()).addAudio(aAlter);
 			}
@@ -60,12 +67,12 @@ public class DeviceUtils {
 		} else {
 			int indexOne = dists.indexOf(Collections.min(dists));
 			closeDevs.add(devices.get(devIds.get(indexOne)));
-			printArrayList(dists);
+			//printArrayList(dists);
 			dists.set(indexOne, 100.0);
-			printArrayList(dists);
+			//printArrayList(dists);
 			int indexTwo = dists.indexOf(Collections.min(dists));
 			closeDevs.add(devices.get(devIds.get(indexTwo)));
-			System.out.println("Index1 = " + indexOne + ", " + "Index2 = " + indexTwo);
+			//System.out.println("Index1 = " + indexOne + ", " + "Index2 = " + indexTwo);
 		}
 		
 		return closeDevs;
