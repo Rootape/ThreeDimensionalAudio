@@ -22,6 +22,12 @@ import ThreeDimensionalAudio.util.math.MathUtils;
 @SuppressWarnings("restriction")
 public class DeviceUtils {
 	
+	/**
+	 * Função para divisão de áudios entre os dispositivos
+	 * @param devices Mapa dos dispositivos
+	 * @param audios Lista dos Áudios
+	 * @return Um mapa com os dispositivos atualizados com seus áudios 
+	 */
 	public static HashMap<String, Device> populateDevices(HashMap<String, Device> devices, ArrayList<Audio> audios){
 				
 		for(Audio a: audios) {

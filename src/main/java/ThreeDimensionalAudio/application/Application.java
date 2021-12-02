@@ -17,6 +17,7 @@ public class Application {
 	
 	public static void main(String[] args) {
 		
+		//Caminho do XML de Dispositivos
 		String xmlDevices = "src\\main\\resources\\xmlDev.xml";
 		Scanner sca = new Scanner(System.in);
 		
@@ -24,15 +25,19 @@ public class Application {
 		String s = sca.nextLine();
 		
 		for(int i = 1; i < 8; i++) {
+			//Caminho do XML de Audio a ser lido
 			String xmlAudios = "src\\main\\resources\\xmlAudio" + i + ".xml";
 			
-			//System.out.println("Parsing Audio XML");
+			//Inicialização da Lista de Áudios com o Parser do XML de Áudio
 			ArrayList<Audio> audios = XMLParsers.readAudiosConfig(xmlAudios);
-			//System.out.println("Parsing Devices XML");
+			
+			//Inicialização do Mapa de Dispositivos com o Parser do XML de Dispositivos
 			HashMap<String, Device> devices = XMLParsers.readDevicesConfig(xmlDevices);
 			
-			//System.out.println("Populating Devices with Audios");
+			//Divisão do Áudio entre os Dispositivos
 			devices = DeviceUtils.populateDevices(devices, audios);
+			
+			//Reprodução do Áudio
 			PlayUtils.play(devices.values());
 			
 			System.out.print("Press ENTER to continue");

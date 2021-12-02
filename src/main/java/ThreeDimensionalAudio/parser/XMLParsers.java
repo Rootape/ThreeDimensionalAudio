@@ -20,7 +20,12 @@ import ThreeDimensionalAudio.util.audio.AudioUtils;
 
 public class XMLParsers {
 	
-public static ArrayList<Audio> readAudiosConfig(String xmlAudios) {
+	/**
+	 * Parser para o XML de Áudio.
+	 * @param xmlAudios Caminho do arquivo XML
+	 * @return Uma lista de áudios extraídos do XML.
+	 */
+	public static ArrayList<Audio> readAudiosConfig(String xmlAudios) {
 		
 		ArrayList<Audio> audios = new ArrayList<>();
 		Audio tempAudio;
@@ -61,6 +66,11 @@ public static ArrayList<Audio> readAudiosConfig(String xmlAudios) {
 		
 	}
 	
+	/**
+	 * Parser para o XML de Dispositivos.
+	 * @param xmlDevices Caminho do arquivo XML
+	 * @return Um mapa de dispositivos extraídos do XML.
+	 */
 	public static HashMap<String, Device> readDevicesConfig(String xmlDevices) {
 		
 		HashMap<String, Device> devices = new HashMap<>();

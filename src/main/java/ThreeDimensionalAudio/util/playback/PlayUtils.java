@@ -13,6 +13,10 @@ import ThreeDimensionalAudio.model.Device;
 
 public class PlayUtils {
 	
+	/**
+	 * Função para reprodução dos áudios separados entre os dispositivos
+	 * @param devices Mapa dos dispositivos
+	 */
 	public static void play(Collection<Device> devices) {
 		
 		Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
